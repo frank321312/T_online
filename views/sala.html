@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/sala.css">
+    <title>Sala</title>
+</head>
+
+<body>
+    <!-- <div class="desonectado">Te has desconectado</div> -->
+    <div class="contenedor-puntos">
+        <div class="p1 p-s">
+            <div>
+                <b>Jugador 1: </b><p class="name-1 dis-p"></p>
+            </div>
+            <div>
+                <b>Puntos: </b><p class="points dis-p">0</p>
+            </div>
+        </div>
+        <div class="contenedor-comenzar">
+            <button class="comenzar">Comenzar</button>
+            <!-- <div class="tiempo">0</div> -->
+        </div>
+        <div class="p2 p-s">
+            <div>
+                <b>Jugador 2: </b><p class="name-2 dis-p"></p>
+            </div>
+            <div>
+                <b>Puntos: </b><p class="points dis-p">0</p>
+            </div>
+        </div>
+    </div>
+    <div class="contenedor-chat">
+        <div class="mensajes"></div>
+        <form class="form-mensaje">
+            <input type="text" class="mensaje">
+            <button class="btn-enviar" type="submit">Enviar</button>
+        </form>
+    </div>
+    <div class="contenedor-tabla"></div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="scripts/sala.js"></script>
+</body>
+
+</html>

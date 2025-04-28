@@ -1,0 +1,140 @@
+1- Mostrar el formulario para la creacion de la sala. Completo
+2- Luego de la creacion de la sala unirse a ella automaticamente, realizar la logica para la base de datos. Completo
+3- Hacer el diseño para la sala.html y que sea responsivo. Incompleto
+4- Realizar la logica para el chat para cada sala. Incompleto
+5- Realizar la logica para el juego, si un jugador tarda demasiado en hacer una jugada pierde automaticamente entre otros casos. Incompleto
+
+bd: Base de datos
+1: jugador X
+0: jugador O
+- Al acabarse el tiempo se escuecha un evento (tiempoFinalizado), este evento se escucha independientemente de si se hizo una jugada o no, se hace un consulta a la bd,
+- se trae a todos los usuarios de la sala, se obtiene por separado que jugador juega con "X" o con "O". ¿Como se verifica que el jugador hizo la jugada?.
+- Al tener por separado que jugador juega con 1 o 0 se puede obtener de quien es el turno en el momento de que el tiempo finaliza, se hace una consulta
+- a la bd, se obtiene todos las jugadas de la sala en la que se encuentra actualmente, se compara la cantidad de jugadas entre el jugador 1 y 0, si ambas dan las misma cantidad
+- quiere decir que el jugador que tiene el turno en el que el tiempo finalizo no hizo su jugada por ende pierde automaticamente. ¿Como puedo saber si el segundo jugador 
+- hizo su jugada sabiendo que la cantidad de jugadas que hace siempre sera inferior a la del primer jugador y viceversa para el primer jugador?.
+- Se tiene dos opciones, una es crear un propiedad para saber quien usa la primera jugada, y la otra es obtener la primera jugada de la bd, de ese modo se sabra quien hizo la primera jugada, entonces se puede saber lo siguiente, si el primer jugador tiene una cantidad mayor de jugadas a las del segundo jugador entonces si realizo su jugada. Se sabe que la cantidad de jugadas del segundor siempre sera inferior a las del primer jugador, siempre y cuando el primer jugador haga todas sus jugadas, entonces se hace una comparacion si la cantidad de jugadas del segundo jugador y primer jugador es igual significa que el segundo jugador hizo su jugada. ¿Pero si la cantidad de jugadas de ambos jugadores son iguales el primer jugador pierde automaticamente segun la respuesta de la primera pregunta?.
+- Ese caso solo se aplica para el primer jugador mas no para el segundo, osea digamos que en el momento en que se hace la primera jugada ya se define que casos aplicar para cada jugador.
+
+// const [rowUsuarios, _fieldsU] =  await db!.execute("SELECT idUsuario, turno FROM Usuario WHERE idSala = ? ORDER BY juegaCon ASC", [usuario.idSala]);
+                // const [rowPrimeraJugada, _fieldsP] = await db!.execute("SELECT * FROM Jugada WHERE idSala = ? LIMIT 1", [usuario.idSala]);
+
+                // if (Array.isArray(rowPrimeraJugada) && rowPrimeraJugada.length == 0) {
+                //     console.log(`${usuario.nombre} El primer jugador no realizo su primera jugada`);
+                //     return;
+                // }
+
+                // if (!Array.isArray(rowUsuarios) || !Array.isArray(rowPrimeraJugada)) return;
+                // const jugadorO = rowUsuarios[0] as Usuario;
+                // const jugadorX = rowUsuarios[1] as Usuario;
+                // const primeraJugada = rowPrimeraJugada[0] as Jugada;
+                // const [rowJugadasO, _fieldsO] = await db!.execute("SELECT * FROM Jugada WHERE idUsuario = ?", [jugadorO.idUsuario])
+                // const [rowJugadasX, _fieldsX] = await db!.execute("SELECT * FROM Jugada WHERE idUsuario = ?", [jugadorX.idUsuario])
+
+                // if (!Array.isArray(rowJugadasO) || !Array.isArray(rowJugadasX)) return;
+                // if (usuario.idUsuario == primeraJugada.idUsuario) {
+                //     if (rowJugadasO.length == rowJugadasX.length) {
+                //         console.log(`${usuario.nombre} es el que hizo la primera jugada y no realiza su jugada a tiempo`);
+                //         return;
+                //     }
+                //     console.log(`${usuario.nombre} hizo su jugada`);
+                //     return;
+                // } else {
+                //     if (rowJugadasO.length == rowJugadasX.length) {
+                //         console.log(`${usuario.nombre} hizo su jugada`);
+                //         return;
+                //     }
+                //     console.log(`${usuario.nombre} no hizo su jugada`);
+                //     return;
+                // }
+
+Solucionar los siguientes problemas:
+1- Al desconectarse por motivos de wifi o presionando f5 el tiempo debe ser descontado en caso de reconexion.
+
+Soluciones propuestas:
+1- Usar el objeto Map para almacenar los eventos pendientes que aun no han sido respondidos, es decir, almacenarlos en memoria.
+
+
+const existeEventoPendiente = eventosPendientes.has(usuario.idUsuario);
+        if (!existeEventoPendiente) {
+            eventosPendientes.set(usuario.idUsuario, ["tiempoFinalizado", Date.now()])
+        }
+        console.log(usuario.nombre, socketsDesconectados);
+        // if (estadoC.desconectado) {
+        //     socketsDesconectados.set(usuario.idUsuario, { desconectado: false });      
+        // }
+        // console.log(usuario.nombre, "Me INVOCO");
+        socket.timeout(existeEventoPendiente ? eventosPendientes.get(usuario.idUsuario)[2] : 10000).emit("tiempoFinalizado", async (err: Error, data: { status: string, posicion: number }) => {
+            const estado = socketsDesconectados.get(usuario.idUsuario)
+            const tiempoRestante = 10 - Math.floor((Date.now() - eventosPendientes.get(usuario.idUsuario)[1]) / 1000);
+            console.log(data);
+            // console.log(new Date(), socket.id, usuario.nombre)
+            // console.log(data)
+            if (estado.desconectado && tiempoRestante > 0) {
+                socketsDesconectados.set(usuario.idUsuario, { desconectado: false });
+                // console.log(socket.id, socketsDesconectados);
+                
+            } else {
+
+                if (err) {
+                console.log(err);
+                // console.log(`${usuario.nombre} se le acabo el tiempo`);
+                const [rowUsuarioOpenente, _fieldsU] = await db!.execute("SELECT idUsuario, puntos FROM Usuario WHERE idUsuario != ? AND idSala = ?", [usuario.idUsuario, usuario.idSala]);
+                if (!Array.isArray(rowUsuarioOpenente)) return;
+
+                const usuarioOponente = rowUsuarioOpenente[0] as Usuario;
+                await sumarPuntos(usuarioOponente.idUsuario, usuarioOponente.puntos + 1);
+                await borrarJugadas(usuario.idSala);
+                await reestablecerUsuario(usuario.idSala);
+                await db!.execute("UPDATE Sala SET enJuego = FALSE WHERE idSala = ?", [usuario.idSala]);
+
+                eventosPendientes.delete(usuario.idUsuario);
+                socketsDesconectados.set(usuario.idUsuario, { desconectado: false });
+                io.to(nombreSala).emit("termino", usuario.idUsuario);
+                return;
+            }
+
+            const [rowUsuario, _fieldsU] = await db!.execute("SELECT * FROM Usuario WHERE idUsuario = ?", [usuario.idUsuario]);
+            if (!Array.isArray(rowUsuario)) return;
+            const usuarioSocket = rowUsuario[0] as Usuario;
+
+            if (Boolean(usuarioSocket.turno)) {
+                await db!.execute("CALL alta_jugada(?,?,?)", [usuario.idUsuario, usuario.idSala, data.posicion]);
+                await db!.execute("UPDATE Usuario SET turno = FALSE WHERE idUsuario = ?", [usuario.idUsuario]);
+
+                const [rowJugadas, _fieldsJ] = await db!.execute("SELECT posicion FROM Jugada WHERE idUsuario = ?", [usuario.idUsuario]);
+
+                if (!Array.isArray(rowJugadas)) return;
+                const jugadas = rowJugadas as Jugada[];
+                const gano = esGanador(jugadas.map(x => x.posicion));
+
+                if (gano) {
+                    const [rowJugada, _fieldsJ] = await db!.execute("SELECT posicion, u.juegaCon FROM Jugada j JOIN Usuario u ON j.idUsuario = u.idUsuario WHERE j.idSala = ? ORDER BY idJugada DESC LIMIT 1", [usuario.idSala]);
+                    await sumarPuntos(usuario.idUsuario, usuario.puntos + 1);
+                    await borrarJugadas(usuario.idSala);
+                    await reestablecerUsuario(usuario.idSala);
+                    const [rowUsuarios, _fieldsU] = await db!.execute("SELECT puntos, idUsuario FROM Usuario WHERE idSala = ?", [usuario.idSala]);
+                    await db!.execute("UPDATE Sala SET enJuego = FALSE WHERE idSala = ?", [usuario.idSala]);
+                    io.to(nombreSala).emit("ganador", `${usuarioSocket.nombre} gano!!!`, rowJugada, rowUsuarios);
+                    return;
+                }
+
+                const [rowUsuarioOpenente, _fieldsU] = await db!.execute("SELECT idUsuario FROM Usuario WHERE idUsuario != ? AND idSala = ?", [usuario.idUsuario, usuario.idSala]);
+                if (!Array.isArray(rowUsuarioOpenente)) return;
+                const usuarioOponente = rowUsuarioOpenente[0] as Usuario;
+
+                await db!.execute("UPDATE Usuario SET turno = TRUE WHERE idUsuario = ?", [usuarioOponente.idUsuario]);
+                eventosPendientes.delete(usuario.idUsuario);
+
+                io.to(nombreSala).emit("siguienteJugada");
+            }}
+        });
+
+let count = 0;
+const sappe = setInterval(() => {
+    count++
+    if (count == 10) {
+        console.log("Se acabo")
+        return
+    }
+})

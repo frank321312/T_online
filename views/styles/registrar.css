@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.formulario {
+    border-radius: 4px;
+    background-color: #fff;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    min-width: 250px;
+    flex-basis: 270px;
+    height: 160px;
+    justify-content: center;
+    box-shadow: 1px 1px 5px #000;
+}
+
+.form-input {
+    padding: 7px;
+    border-radius: 5px;
+}
+
+.contenedor-titulo {
+    text-align: center;
+    margin-bottom: 23px;
+    font-size: 15px;
+}
+
+.btn {
+    background-color: rgb(64, 145, 199);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+    transition-property: background;
+    transition-duration: .3s;
+}
+
+#nombre {
+    border: none;
+    outline: none;
+    font-size: 14px;
+    transition-property: all;
+    transition-duration: .4s;
+    background-color: rgb(233, 229, 229);
+}
+
+.formulario label {
+    padding-bottom: 5px;
+}
+
+.error {
+    color: rgb(223, 34, 34);
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+/* Efectos para el formulario */
+
+.btn:hover {
+    background-color: rgb(78, 156, 209);
+}
+
+#nombre:hover {
+    background-color: rgb(216, 206, 206);
+}
+
+#nombre:focus {
+    background-color: rgb(216, 206, 206);
+}

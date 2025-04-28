@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio</title>
+    <link rel="stylesheet" href="styles/inicio.css">
+    <link rel="stylesheet" href="styles/crearSala.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="stylesheet" href="styles/buscarSala.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1 class="titulo">T_online</h1>
+            <ul class="list-item">
+                <li class="item">Ver salas</li>
+                <li class="item">Crear sala</li>
+                <li class="item">Buscar sala</li>
+            </ul>
+        </nav>
+    </header>
+    <div class="contenedor-search">
+        <form class="form">
+            <input type="search" id="inputBuscar" placeholder="Buscar sala, ej: 2">
+        </form>
+        <p class="error-message"></p>
+    </div>
+    <div class="contenedor">
+        <div class="contenedor-sala"></div>
+    </div>
+    <div class="crear-sala">
+        <form class="form-sala">
+            <div class="form-fila">
+                <label for="select-type">Tipo de acceso:</label>
+                <select id="select-type">
+                    <option value="publico">Público</option>
+                    <option value="privado">Privado</option>
+                </select>
+                <p class="error err-select"></p>
+            </div>
+            <div class="form-fila">
+                <label for="codigo">Codigo:</label>
+                <input type="text" id="codigo" autocomplete="off" disabled>
+                <p class="error err-codigo"></p>
+            </div>
+            <button class="btn-cancelar">Cancelar</button>
+            <button class="btn-crear" type="submit">Crear sala</button>
+        </form>
+    </div>
+    <div class="contenedor-unirse">
+        <form class="form-sala">
+            <div class="form-fila">
+                <label for="codigo">Codigo:</label>
+                <input type="text" id="codigo-unirse" autocomplete="off">
+                <p class="error err-codigo err-unirse"></p>
+            </div>
+            <button class="btn-cancelar-unirse">Cancelar</button>
+            <button class="btn-unirse-sala" type="submit">Unirse</button>
+        </form>
+    </div>
+    <div style="text-align: center; margin-bottom: 50px; color: rgb(0, 162, 255);"><span style="cursor: pointer;" class="mostrarSalas">Mostrar mas salas</span></div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="scripts/inicio.js"></script>
+    <script src="scripts/buscarSala.js"></script>
+</body>
+
+</html>
