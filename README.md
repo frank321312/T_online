@@ -6,8 +6,8 @@ T_online es un programa que permite jugar al clasico tateti, tambien pudiendo en
 Si, como todo programa, si entiendes el codigo te daras cuenta de ciertas vulnerabilidades, por ejemplo en sala.js se delega que el temporizador lo emita el socket, lo cual es una mala practica delegarle tal tarea al cliente ya que si se borra esa linea de codigo la partida nunca avanzara y se quedara asi indefinidamente, obviamente se pudo delegar al servidor emitiendo un evento interno que solo lo escuchara el pero durante el desarrollo no le di mucha imporancia.
 
 ## Ejecución
-El programa puede ser ejecutado tanto con bun como node, recomiendo usar bun, tambien puede ver los camandos con los cual ejecutar el programa en el package.json en la seccion de scripts.
-Tambien debe tener en cuenta las variables de entorno para su correcto funcionamiente entre ellos:
+El programa puede ser ejecutado tanto con bun como npm, recomiendo usar bun, tambien puede ver los camandos con los cual ejecutar el programa en el package.json en la seccion de scripts.
+Tambien debe tener en cuenta las variables de entorno para su correcto funcionamiento entre ellos:
 DB_HOST
 DB_PORT
 DB_NAME
