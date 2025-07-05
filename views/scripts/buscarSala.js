@@ -2,9 +2,12 @@
 let inputBuscar;
 let formulario;
 const contenedorSearch = document.querySelector(".contenedor-search");
+const isIp = false
+const domain = isIp ? "192.168.0.10" : "http://localhost"
+const urlApi = `${domain}:4005`
 
 async function buscarSala(inputBuscar) {
-    const res = await fetch(`http://localhost:4005/api/sala/buscar-sala?sala=${inputBuscar.value}`);
+    const res = await fetch(`${urlApi}/api/sala/buscar-sala?sala=${inputBuscar.value}`);
     const data = await res.json();
     console.log(data)
     return data

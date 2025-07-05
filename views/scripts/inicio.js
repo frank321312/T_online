@@ -7,6 +7,9 @@ const crearSala = document.querySelector(".crear-sala");
 const btnUnirse = document.querySelectorAll(".btn-unirse");
 const mostrarSalas = document.querySelector(".mostrarSalas");
 const contenedorSala = document.querySelector(".contenedor-sala");
+const isIp = false
+const domain = isIp ? "192.168.0.10" : "http://localhost"
+const urlApi = `${domain}:4005`
 
 const contenedorUnirse = document.querySelector(".contenedor-unirse");
 const codigoSala = document.querySelector("#codigo-unirse");
@@ -63,7 +66,7 @@ selectType.addEventListener("change", (e) => {
 btnCrear.addEventListener("click", (e) => {
     e.preventDefault();
     
-    fetch("http://localhost:4005/api/sala/crear-sala", {
+    fetch(`${urlapi}/api/sala/crear-sala`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -83,7 +86,7 @@ btnCrear.addEventListener("click", (e) => {
                 crearSala.style.display = "none";
                 selectType.value = "publico";
                 socket.emit("salaNueva");
-                window.location.assign(`http://localhost:4005/sala`);
+                window.location.assign(`${urlapi}/sala`);
             } else if (data.path == "publico") {
                 errSelect.textContent = data.message;
                 selectType.classList.add("codigo-error");
@@ -118,7 +121,7 @@ function insertarSalas(salas) {
 
         if (sala.publico == 1) {
             htmlBtn.addEventListener("click", () => {
-                fetch("http://localhost:4005/api/usuario/unirse-sala", {
+                fetch(`${urlapi}/api/usuario/unirse-sala`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -134,7 +137,7 @@ function insertarSalas(salas) {
                     })
                     .then(data => {
                         if (data == null) {
-                            window.location.assign("http://localhost:4005/sala");
+                            window.location.assign(`${urlapi}/sala`);
                         } else {
                             console.log(data);
                         }
@@ -148,7 +151,7 @@ function insertarSalas(salas) {
                     e.preventDefault();
 
                     try {
-                        const res = await fetch("http://localhost:4005/api/usuario/unirse-sala", {
+                        const res = await fetch(urlApi+`/api/usuario/unirse-sala`, {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
@@ -160,7 +163,7 @@ function insertarSalas(salas) {
                         console.log(data)
                         if (data == null) {
                             reiniciar();
-                            window.location.assign("http://localhost:4005/sala");
+                            window.location.assign(`http://localhost:4005/sala`);
                         } else {
                             messageErrorCode.textContent = data.message;
                         }

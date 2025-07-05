@@ -18,6 +18,9 @@ const socket = io({
         juegaCon: null
     }
 });
+const isIp = false
+const domain = isIp ? "192.168.0.10" : "http://localhost"
+const urlApi = `${domain}:4005`
 
 socket.on("borrarJugador", () => {
     name2.textContent = "";
@@ -26,7 +29,7 @@ socket.on("borrarJugador", () => {
 
 async function usuarioToken() {
     const token = document.cookie.split("=")[1];
-    const res = await fetch("http://localhost:4005/decode-token", {
+    const res = await fetch(`${urlApi}/decode-token`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"

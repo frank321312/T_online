@@ -49,9 +49,7 @@ const io = new Server(httpServer, {
 
 const PORT = process.env.PORT || 4005;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dirList = __dirname.split("\\");
-dirList.pop();
-export const ruta = dirList.join("\\");
+export const ruta = path.resolve(__dirname, '..');
 
 app.use(cors());
 app.use(express.json());
